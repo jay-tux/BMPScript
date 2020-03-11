@@ -36,6 +36,8 @@ while getopts 'crh' opt; do
 	esac
 done
 
+mkdir -p bin
+
 if [[ $compile == 'true' ]]; then
 	mcs -r:System.Drawing -out:bin/bmpscript.exe -main:Jay.BMPScript.Program *.cs 
 	if [[ $? != 0 ]]; then
