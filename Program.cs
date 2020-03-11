@@ -14,8 +14,17 @@ namespace Jay.BMPScript
             }
             else
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.Error.WriteLine("No image to parse.");
+                Console.WriteLine($"Trying to load {args[0]}.");
+                if(File.Exists(args[0]))
+                {
+                    Console.WriteLine($"Started parser on {args[0]}.");
+                    new Loader(args[0]);
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.Error.WriteLine("No image to parse.");
+                }
             }
         }
     }

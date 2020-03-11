@@ -35,17 +35,22 @@ namespace Jay.BMPScript
             {
                 switch((CodeChar.Order)GetAt(it.Current))
                 {
-                    case CodeChar.Order.Entry:  continue;
+                    case CodeChar.Order.Entry:  
+                        OutWriter.Debug("Encountered Entry Point");
+                        continue;
 
                     case CodeChar.Order.Exit:   
+                        OutWriter.Debug("Encountered Exit Point");
                         fin = true;     
                         break;
 
                     case CodeChar.Order.If:
+                        OutWriter.Debug("Encountered If Branch");
                         it.MoveNext();
                         cc = GetAt(it.Current);
                         if(EvaluateCheck(cc.GetField(CodeChar.Part.R), cc.GetField(CodeChar.Part.G), cc.GetField(CodeChar.Part.B)))
                         {
+                            OutWriter.Debug("  Check Succeeded");
                             it.MoveNext();
                             if(Labels.ContainsKey(GetAt(it.Current)))
                             {
@@ -55,11 +60,13 @@ namespace Jay.BMPScript
                         }
                         else
                         {
+                            OutWriter.Debug("  Check Failed");
                             it.MoveNext();
                         }
                         break;
 
                     case CodeChar.Order.Jump: 
+                        OutWriter.Debug("Encountered Jump");
                         it.MoveNext();  
                         if(Labels.ContainsKey(GetAt(it.Current)))
                         {
@@ -69,11 +76,13 @@ namespace Jay.BMPScript
                         break;
 
                     case CodeChar.Order.Label:
+                        OutWriter.Debug("Encountered Mark Label");
                         it.MoveNext();
                         Labels[GetAt(it.Current)] = new Point(it.Current.X, it.Current.Y);
                         break;
 
                     case CodeChar.Order.Math:
+                        OutWriter.Debug("Encountered Math Expression");
                         it.MoveNext();
                         cc = GetAt(it.Current);
                         it.MoveNext();
@@ -82,10 +91,12 @@ namespace Jay.BMPScript
                         break;
 
                     case CodeChar.Order.Not:
+                        OutWriter.Debug("Encountered Negative If Branch");
                         it.MoveNext();
                         cc = GetAt(it.Current);
                         if(!EvaluateCheck(cc.GetField(CodeChar.Part.R), cc.GetField(CodeChar.Part.G), cc.GetField(CodeChar.Part.B)))
                         {
+                            OutWriter.Debug("  Check Succeeded");
                             it.MoveNext();
                             if(Labels.ContainsKey(GetAt(it.Current)))
                             {
@@ -95,16 +106,19 @@ namespace Jay.BMPScript
                         }
                         else
                         {
+                            OutWriter.Debug("  Check Failed");
                             it.MoveNext();
                         }
                         break;
 
                     case CodeChar.Order.Parse:
+                        OutWriter.Debug("Encountered Parse Next File");
                         Read++;
                         new Loader(Environment.CurrentDirectory + $"/{Read}.bmp", Depth);
                         break;
 
                     case CodeChar.Order.Read:
+                        OutWriter.Debug("Encountered Read Stdin");
                         it.MoveNext();
                         cc = GetAt(it.Current);
                         if(cc.GetField(CodeChar.Part.R) >= 128)
@@ -122,6 +136,7 @@ namespace Jay.BMPScript
                         break;
 
                     case CodeChar.Order.RNG:
+                        OutWriter.Debug("Encountered RNG");
                         it.MoveNext();
                         cc = GetAt(it.Current);
                         Integers[cc.GetField(CodeChar.Part.R)] = RNG.Next(
@@ -131,6 +146,7 @@ namespace Jay.BMPScript
                         break;
 
                     case CodeChar.Order.RGNV:
+                        OutWriter.Debug("Encountered Generic RNG");
                         it.MoveNext();
                         cc = GetAt(it.Current);
                         int e1 = (Integers.ContainsKey(cc.GetField(CodeChar.Part.G)) ? Integers[cc.GetField(CodeChar.Part.G)] : 
@@ -143,6 +159,7 @@ namespace Jay.BMPScript
                         break;
 
                     case CodeChar.Order.Var:    
+                        OutWriter.Debug("Encountered Define Var");
                         it.MoveNext();
                         cc = GetAt(it.Current);
                         if(cc.GetField(CodeChar.Part.R) >= 128)
@@ -156,6 +173,7 @@ namespace Jay.BMPScript
                         break;
 
                     case CodeChar.Order.VarCP:
+                        OutWriter.Debug("Encountered Copy Var");
                         it.MoveNext();
                         cc = GetAt(it.Current);
                         if(cc.GetField(CodeChar.Part.R) >= 128)
@@ -175,16 +193,19 @@ namespace Jay.BMPScript
                         break;
 
                     case CodeChar.Order.WriteC: 
+                        OutWriter.Debug("Encountered Write Constant");
                         it.MoveNext();
                         cc = this.GetAt(it.Current);
                         Console.Write($"{(char)cc.GetField(CodeChar.Part.R)}{(char)cc.GetField(CodeChar.Part.G)}{(char)cc.GetField(CodeChar.Part.B)}");
                         break;
 
                     case CodeChar.Order.WriteLn:
+                        OutWriter.Debug("Encountered Write Line");
                         Console.WriteLine();
                         break;
 
                     case CodeChar.Order.WriteV: 
+                        OutWriter.Debug("Encountered Write Var");
                         it.MoveNext();
                         int vl = this.GetAt(it.Current).GetField(CodeChar.Part.R);
                         Console.Write((Integers.ContainsKey(vl) ? Integers[vl] : Characters.ContainsKey(vl) ? Characters[vl] : vl));

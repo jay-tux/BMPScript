@@ -14,6 +14,8 @@ namespace Jay.BMPScript
             Console.Write(Data);
         }
 
+        public static void Debug(string Data) => Console.WriteLine(Data);
+
         /*public void Finish(int OutFile)
         {
             //byte[] data = new b

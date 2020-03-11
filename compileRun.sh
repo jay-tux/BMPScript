@@ -39,12 +39,15 @@ done
 mkdir -p bin
 
 if [[ $compile == 'true' ]]; then
-	mcs -r:System.Drawing -out:bin/bmpscript.exe -main:Jay.BMPScript.Program *.cs 
+	mcs -r:System.Windows.Forms -r:System.Drawing -out:bin/bmpscript.exe -main:Jay.BMPScript.Program *.cs 
 	if [[ $? != 0 ]]; then
 		>&2 echo "Failed to compile." 
 		exit -1
 	fi
 fi
 if [[ $run == 'true' ]]; then
-	mono bin/bmpscript.exe examples/0.bmp
+	echo ""
+	echo ""
+	dr=`pwd`
+	mono bin/bmpscript.exe "$dr/examples/0.bmp"
 fi

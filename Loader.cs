@@ -3,6 +3,7 @@ using System.Drawing;
 using System.IO;
 using System.Collections.Generic;
 using Jay.IEnumerators;
+using System.Windows.Forms;
 
 namespace Jay.BMPScript
 {
@@ -22,7 +23,11 @@ namespace Jay.BMPScript
                 try
                 {
                     Entry = new Point(0, 0);
-                    Bitmap img = new Bitmap(Input);
+                    Image i = Image.FromFile(Input);
+                    OutWriter.Debug($"Trying to load Image: {i.GetLastStatus()}");
+                    Bitmap img = new Bitmap(i);
+                    //Bitmap img = new Bitmap(Input);
+                    OutWriter.Debug("Image Loaded");
                     Data = new Color[img.Width, img.Height];
                     for(int x = 0; x < img.Width; x++)
                     {
@@ -36,6 +41,11 @@ namespace Jay.BMPScript
                         }
                     }
                     new Parser(Data.ToCodeChar(), Depth).Start(Entry);
+                }
+                catch(ArgumentException ane)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    OutWriter.Debug($"Argument Exception: {Input}: {ane.Message}\n\t{ane.StackTrace}");
                 }
                 catch(IOException ioe)
                 {
