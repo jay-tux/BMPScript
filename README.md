@@ -115,4 +115,4 @@ The script accepts three arguments:
  * ``-r`` runs the ``bin/bmpscript.exe`` with Mono.
 If you pass both the ``-c`` and ``-r`` options and the compilation fails, mono isn't invoke on ``bin/bmpscript.exe``.
 ## Modifying
-All data about modifying and/or extending BMPScript are in the 
+All data about modifying and/or extending BMPScript are in the [help/mod.md](https://github.com/jay-tux/BMPScript/blob/master/help/mod.md) file.
