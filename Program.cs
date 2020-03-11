@@ -19,6 +19,7 @@ namespace Jay.BMPScript
                 {
                     Console.WriteLine($"Started parser on {args[0]}.");
                     new Loader(args[0]);
+                    //new Loader(args[0]);
                 }
                 else
                 {

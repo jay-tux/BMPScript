@@ -39,7 +39,9 @@ done
 mkdir -p bin
 
 if [[ $compile == 'true' ]]; then
-	mcs -r:System.Windows.Forms -r:System.Drawing -out:bin/bmpscript.exe -main:Jay.BMPScript.Program *.cs 
+	shopt -s globstar
+	dt=`find . -name '*.cs' | tr '\n' ' '`
+	mcs -r:System.Windows.Forms -r:System.Drawing -out:bin/bmpscript.exe -main:Jay.BMPScript.Program $dt
 	if [[ $? != 0 ]]; then
 		>&2 echo "Failed to compile." 
 		exit -1

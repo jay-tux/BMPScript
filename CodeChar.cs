@@ -32,6 +32,9 @@ namespace Jay.BMPScript
         public static explicit operator int(CodeChar vl) =>
             (vl.Fields[0] * 65536 + vl.Fields[1] * 256 + vl.Fields[2]);
 
+        public static explicit operator CodeChar(byte[] vl)
+            => new CodeChar(new int[]{ vl[0], vl[1], vl[2] });
+
         public static explicit operator Color(CodeChar vl)
             => Color.FromArgb(vl.Fields[0], vl.Fields[1], vl.Fields[2]);
 
@@ -39,7 +42,7 @@ namespace Jay.BMPScript
             (char)((int)Math.Round(Math.Pow((int)vl, 1.0/3)));
         
         public static explicit operator string(CodeChar vl) =>
-            ($"({(vl.Fields[0].ToString("X"))}, {(vl.Fields[0].ToString("X"))}, {(vl.Fields[0].ToString("X"))}) -> {Enum.GetNames(typeof(Order))[(int)((Order)vl)]}");
+            ($"({(vl.Fields[0].ToString("X2"))}, {(vl.Fields[1].ToString("X2"))}, {(vl.Fields[2].ToString("X2"))}) -> {Enum.GetNames(typeof(Order))[(int)((Order)vl)]}");
 
         public static explicit operator Order(CodeChar vl) =>
             (Order)((int)vl * Enum.GetNames(typeof(Order)).Length / 16777216);   

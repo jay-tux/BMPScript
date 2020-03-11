@@ -3,13 +3,12 @@ using System.Drawing;
 using System.IO;
 using System.Collections.Generic;
 using Jay.IEnumerators;
-using System.Windows.Forms;
 
 namespace Jay.BMPScript
 {
     public class Loader
     {
-        private Color[,] Data;
+        private CodeChar[,] Data;
         private Point Entry;
 
         public Loader(string Input) => Load(Input);
@@ -23,24 +22,19 @@ namespace Jay.BMPScript
                 try
                 {
                     Entry = new Point(0, 0);
-                    Image i = Image.FromFile(Input);
-                    OutWriter.Debug($"Trying to load Image: {i.GetLastStatus()}");
-                    Bitmap img = new Bitmap(i);
-                    //Bitmap img = new Bitmap(Input);
-                    OutWriter.Debug("Image Loaded");
-                    Data = new Color[img.Width, img.Height];
-                    for(int x = 0; x < img.Width; x++)
+                    OutWriter.Debug("Trying to load/convert image...");
+                    Data = new ParseBMP().Recreate(Input);
+                    for(int x = 0; x < Data.GetLength(0); x++)
                     {
-                        for(int y = 0; y < img.Height; y++)
+                        for(int y = 0; y < Data.GetLength(1); y++)
                         {
-                            Data[x, y] = img.GetPixel(x, y);
                             if((CodeChar.Order)((CodeChar)Data[x, y]) == CodeChar.Order.Entry)
                             {
                                 Entry = new Point(x, y);
                             }
                         }
                     }
-                    new Parser(Data.ToCodeChar(), Depth).Start(Entry);
+                    new Parser(Data, Depth).Start(Entry);
                 }
                 catch(ArgumentException ane)
                 {
