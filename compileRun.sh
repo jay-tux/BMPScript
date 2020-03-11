@@ -46,5 +46,5 @@ if [[ $compile == 'true' ]]; then
 	fi
 fi
 if [[ $run == 'true' ]]; then
-	mono bin/bmpscript.exe
+	mono bin/bmpscript.exe examples/0.bmp
 fi
