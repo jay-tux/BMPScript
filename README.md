@@ -21,7 +21,10 @@ BMPScript has only comparison operators and mathematical operators:
    * ``-``, spanning ``64-127``,  
    * ``+``, spanning ``128-191``, and  
    * ``*``, spanning ``192-255``
-#### The Commands
+#### Normal Order of Execution
+Because BMPScript is an esoteric programming language, we won't parse your image top-to-bottom, left-to-right, but in a snake-like way, starting at the bottom-right pixel.
+![Start bottom-right, then up](https://github.com/jay-tux/BMPScript/help/orderofexec.png  "Order of execution")
+#### Commands
 BMPScript has 16 possible commands, each of which has a range of colors describing the exact same command. This allows for the whole RGB ``(0-255, 0-255, 0-255)`` to be parsable as a command. Complementary commands (mostly) use complementary colors as well.   
 ***
 **ENTRY**  
