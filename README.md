@@ -43,7 +43,7 @@ Prints up to three characters to ``stdout``, also without trailing newline.
 *Color Range:*
 ***
 **WRITE_LN**  
-Prints a newline ``\n`` or ``\r\n`` to ``stdout``.
+Prints a newline ``\n`` or ``\r\n`` to ``stdout``.  
 *Parameters:* n/a  
 *Color Range:* 
 ***
@@ -107,4 +107,12 @@ Terminates execution.
 *Parameters:* n/a  
 *Color Range:*
 ## Compiling/Running
+When compiling, make sure to reference ``System.Drawing`` and set the main class to ``Jay.BMPScript.Program``. Alternatively, there's a compiling/running script in this repo as well: ``./compileRun.sh``. The compiling/running script uses Mono for both compiling and running, so make sure you have that installed (the ``mono`` and ``mcs`` (Mono C# Compiler) commands are required). 
+### ./compileRun.sh
+The script accepts three arguments:  
+ * ``-h`` shows a help message for the compile/run script.  
+ * ``-c`` compiles all ``*.cs`` files into one binary (``bin/bmpscript.exe``).  
+ * ``-r`` runs the ``bin/bmpscript.exe`` with Mono.
+If you pass both the ``-c`` and ``-r`` options and the compilation fails, mono isn't invoke on ``bin/bmpscript.exe``.
 ## Modifying
+All data about modifying and/or extending BMPScript are in the 
