@@ -14,6 +14,8 @@ namespace Jay.BMPScript
             }
             else
             {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Error.WriteLine("No image to parse.");
             }
         }
     }

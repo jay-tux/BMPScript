@@ -20,6 +20,9 @@ namespace Jay.IEnumerators
             this._BoundY = _BoundY;
         }
 
+        public int XPos { get => _StartX; set=> _StartX = value % _BoundX; }
+        public int YPos { get => _StartY; set=> _StartY = value % _BoundY; }
+
         public IEnumerator<Point> Linear()
         {
             while(true)
