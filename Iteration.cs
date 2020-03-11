@@ -11,6 +11,8 @@ namespace Jay.IEnumerators
         private int _StartY;
         private int _BoundX;
         private int _BoundY;
+        private int _RealStartX;
+        private int _RealStartY;
 
         public Iteration2D(int _StartX, int _StartY, int _BoundX, int _BoundY)
         {
@@ -109,7 +111,7 @@ namespace Jay.IEnumerators
             }
         }
 
-        public IEnumerator<Point> Snake(int direction)
+        public IEnumerator<Point> Snake(int direction, bool oneRun = false)
         {
             if(!(direction == 0 || direction == 90 || direction == 180 || direction == 270))
             {
@@ -121,6 +123,8 @@ namespace Jay.IEnumerators
             int syDir = (direction == 0 || direction == 270) ? +1 : -1;
             int xDir = (vertPrimary) ? sxDir : sxDir * ((_StartY % 2 == 0) ? +1 : -1);
             int yDir = (vertPrimary) ? syDir * ((_StartX % 2 == 0) ? +1 : -1) : syDir;
+            _RealStartX = _StartX;
+            _RealStartY = _StartY;
             if(vertPrimary)
             {
                 while(true)
@@ -136,6 +140,10 @@ namespace Jay.IEnumerators
                         {
                             _StartX = (_StartX < 0) ? _BoundX - 1 : 0;
                         }
+                    }
+                    if(oneRun && _RealStartX == _StartX && _RealStartY == _StartY)
+                    {
+                        break;
                     }
                 }
             }
@@ -154,6 +162,10 @@ namespace Jay.IEnumerators
                         {
                             _StartY = (_StartY < 0) ? _BoundY - 1 : 0;
                         }
+                    }
+                    if(oneRun && _RealStartX == _StartX && _RealStartY == _StartY)
+                    {
+                        break;
                     }
                 }
             }

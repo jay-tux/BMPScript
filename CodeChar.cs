@@ -46,6 +46,8 @@ namespace Jay.BMPScript
 
         public static explicit operator Order(CodeChar vl) =>
             (Order)((int)vl * Enum.GetNames(typeof(Order)).Length / 16777216);   
+
+        public override string ToString() => $"0x{Fields[0].ToString("X2")}{Fields[1].ToString("X2")}{Fields[2].ToString("X2")}";
     }
 
     public static class ConversionHelper

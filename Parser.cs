@@ -3,6 +3,7 @@ using System.Drawing;
 using System.IO;
 using System.Collections.Generic;
 using Jay.IEnumerators;
+using System.Linq;
 
 namespace Jay.BMPScript
 {
@@ -25,27 +26,64 @@ namespace Jay.BMPScript
 
         protected CodeChar GetAt(Point Pos) => Program[Pos.X, Pos.Y];
 
+        protected void SysDump()
+        {
+            OutWriter.Debug("   ====  Full SYS_DUMP  ====   ");
+            OutWriter.Debug(" => Defined Labels:");
+            Labels.Select(x => $"\t{x.Key}: ({x.Value.X}, {x.Value.Y})").ToList().ForEach(x => OutWriter.Debug(x));
+            OutWriter.Debug(" ---- ---- ");
+            OutWriter.Debug(" => Defined Variables:");
+            OutWriter.Debug("   -> Defined Integers:");
+            Integers.Select(x => $"\t{x.Key.ToString("D2")}: {x.Value}").ToList().ForEach(x => OutWriter.Debug(x));
+            OutWriter.Debug("  --    --  ");
+            OutWriter.Debug("    -> Defined Characters:");
+            Characters.Select(x => $"\t{x.Key.ToString("D2")}: {x.Value}").ToList().ForEach(x => OutWriter.Debug(x));
+            OutWriter.Debug("   ==== End of SYS_DUMP ====   ");
+        }
+
+        protected void PreProcess()
+        {
+            OutWriter.Debug("Started Preprocessor...");
+            IEnumerator<Point> it = new Iteration2D(Program.GetLength(0), Program.GetLength(1), Program.GetLength(0), Program.GetLength(1))
+                .Snake(180, true);
+            while(it.MoveNext())
+            {
+                if((CodeChar.Order)GetAt(it.Current) == CodeChar.Order.Label)
+                {
+                    OutWriter.Debug("Encountered Mark Label");
+                    it.MoveNext();
+                    Labels[GetAt(it.Current)] = new Point(it.Current.X, it.Current.Y);
+                }
+            }
+            Console.WriteLine("Labels:");
+            Labels.Select(x => $"{x.Key}: ({x.Value.X}, {x.Value.Y})").ToList().ForEach(x => Console.WriteLine($"\t{x}"));
+            OutWriter.Debug("Preprocessor Ready.");
+        }
+
         public void Start(Point Entry)
         {
+            Labels = new Dictionary<CodeChar, Point>();
+            Integers = new Dictionary<int, int>();
+            Characters = new Dictionary<int, char>();
+            PreProcess();
+            if(Program == null) { Console.Error.Write("Program is empty."); }
             Iteration2D i2d = new Iteration2D(Entry.X, Entry.Y, Program.GetLength(0), Program.GetLength(1));
             bool fin = false;
             CodeChar cc;
             IEnumerator<Point> it = i2d.Snake(180);
             while(!fin && it.MoveNext())
             {
+                OutWriter.Debug((string)GetAt(it.Current) + " ");
                 switch((CodeChar.Order)GetAt(it.Current))
                 {
                     case CodeChar.Order.Entry:  
-                        OutWriter.Debug("Encountered Entry Point");
                         continue;
 
                     case CodeChar.Order.Exit:   
-                        OutWriter.Debug("Encountered Exit Point");
                         fin = true;     
                         break;
 
                     case CodeChar.Order.If:
-                        OutWriter.Debug("Encountered If Branch");
                         it.MoveNext();
                         cc = GetAt(it.Current);
                         if(EvaluateCheck(cc.GetField(CodeChar.Part.R), cc.GetField(CodeChar.Part.G), cc.GetField(CodeChar.Part.B)))
@@ -66,7 +104,6 @@ namespace Jay.BMPScript
                         break;
 
                     case CodeChar.Order.Jump: 
-                        OutWriter.Debug("Encountered Jump");
                         it.MoveNext();  
                         if(Labels.ContainsKey(GetAt(it.Current)))
                         {
@@ -76,13 +113,9 @@ namespace Jay.BMPScript
                         break;
 
                     case CodeChar.Order.Label:
-                        OutWriter.Debug("Encountered Mark Label");
-                        it.MoveNext();
-                        Labels[GetAt(it.Current)] = new Point(it.Current.X, it.Current.Y);
                         break;
 
                     case CodeChar.Order.Math:
-                        OutWriter.Debug("Encountered Math Expression");
                         it.MoveNext();
                         cc = GetAt(it.Current);
                         it.MoveNext();
@@ -91,7 +124,6 @@ namespace Jay.BMPScript
                         break;
 
                     case CodeChar.Order.Not:
-                        OutWriter.Debug("Encountered Negative If Branch");
                         it.MoveNext();
                         cc = GetAt(it.Current);
                         if(!EvaluateCheck(cc.GetField(CodeChar.Part.R), cc.GetField(CodeChar.Part.G), cc.GetField(CodeChar.Part.B)))
@@ -112,13 +144,11 @@ namespace Jay.BMPScript
                         break;
 
                     case CodeChar.Order.Parse:
-                        OutWriter.Debug("Encountered Parse Next File");
                         Read++;
                         new Loader(Environment.CurrentDirectory + $"/{Read}.bmp", Depth);
                         break;
 
                     case CodeChar.Order.Read:
-                        OutWriter.Debug("Encountered Read Stdin");
                         it.MoveNext();
                         cc = GetAt(it.Current);
                         if(cc.GetField(CodeChar.Part.R) >= 128)
@@ -136,7 +166,6 @@ namespace Jay.BMPScript
                         break;
 
                     case CodeChar.Order.RNG:
-                        OutWriter.Debug("Encountered RNG");
                         it.MoveNext();
                         cc = GetAt(it.Current);
                         Integers[cc.GetField(CodeChar.Part.R)] = RNG.Next(
@@ -146,7 +175,6 @@ namespace Jay.BMPScript
                         break;
 
                     case CodeChar.Order.RGNV:
-                        OutWriter.Debug("Encountered Generic RNG");
                         it.MoveNext();
                         cc = GetAt(it.Current);
                         int e1 = (Integers.ContainsKey(cc.GetField(CodeChar.Part.G)) ? Integers[cc.GetField(CodeChar.Part.G)] : 
@@ -159,7 +187,6 @@ namespace Jay.BMPScript
                         break;
 
                     case CodeChar.Order.Var:    
-                        OutWriter.Debug("Encountered Define Var");
                         it.MoveNext();
                         cc = GetAt(it.Current);
                         if(cc.GetField(CodeChar.Part.R) >= 128)
@@ -173,7 +200,6 @@ namespace Jay.BMPScript
                         break;
 
                     case CodeChar.Order.VarCP:
-                        OutWriter.Debug("Encountered Copy Var");
                         it.MoveNext();
                         cc = GetAt(it.Current);
                         if(cc.GetField(CodeChar.Part.R) >= 128)
@@ -193,25 +219,23 @@ namespace Jay.BMPScript
                         break;
 
                     case CodeChar.Order.WriteC: 
-                        OutWriter.Debug("Encountered Write Constant");
                         it.MoveNext();
                         cc = this.GetAt(it.Current);
                         Console.Write($"{(char)cc.GetField(CodeChar.Part.R)}{(char)cc.GetField(CodeChar.Part.G)}{(char)cc.GetField(CodeChar.Part.B)}");
                         break;
 
                     case CodeChar.Order.WriteLn:
-                        OutWriter.Debug("Encountered Write Line");
                         Console.WriteLine();
                         break;
 
                     case CodeChar.Order.WriteV: 
-                        OutWriter.Debug("Encountered Write Var");
                         it.MoveNext();
                         int vl = this.GetAt(it.Current).GetField(CodeChar.Part.R);
                         Console.Write((Integers.ContainsKey(vl) ? Integers[vl] : Characters.ContainsKey(vl) ? Characters[vl] : vl));
                         break;
                 }
             }
+            SysDump();
         }
 
         protected int EvaluateMath(int ID1, int OP, int ID2)
