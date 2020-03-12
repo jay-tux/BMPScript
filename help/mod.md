@@ -77,16 +77,16 @@ Represents the possible commands.
 ``public enum Part``  
 Represents one part (one component) of a given pixel.  
 **Implicit Cast Operators**  
-``System.Drawing.Color`` to ``CodeChar``  
+``System.Drawing.Color`` to ``CodeChar`` ![Obsolete](https://img.shields.io/badge/%20-Obsolete-inactive)  
 **Explicit Cast Operators**  
 ``CodeChar`` to ``int``,  
 ``byte[]`` to ``CodeChar``,  
-``CodeChar`` to ``System.Drawing.Color``,  
-``CodeChar`` to ``char``,  
+``CodeChar`` to ``System.Drawing.Color``, ![Obsolete](https://img.shields.io/badge/%20-Obsolete-inactive)  
+``CodeChar`` to ``char``, ![Obsolete](https://img.shields.io/badge/%20-Obsolete-inactive)  
 ``CodeChar`` to ``string``, and  
 ``CodeChar`` to ``CodeChar.Order``.  
 
-### Jay.BMPScript.ConversionHelper
+### Jay.BMPScript.ConversionHelper ![Obsolete](https://img.shields.io/badge/%20-Obsolete-inactive)
 File: ``./CodeChar.cs``
 Inherits: none
 *A static class which extends the ``System.Drawing.Color[]`` and ``System.Drawing.Color[,]`` functionality.*
@@ -94,9 +94,9 @@ Inherits: none
 **Constructors**  
 **Methods**  
 **Extension Methods**  
-``public static CodeChar[] ToCodeChar(this Color[] vl)``  
+``public static CodeChar[] ToCodeChar(this Color[] vl)`` ![Obsolete](https://img.shields.io/badge/%20-Obsolete-inactive)  
 Converts a ``System.Drawing.Color[]`` to a ``CodeChar[]``.  
-``public static CodeChar[,] ToCodeChar(this Color[,] vl)``  
+``public static CodeChar[,] ToCodeChar(this Color[,] vl)`` ![Obsolete](https://img.shields.io/badge/%20-Obsolete-inactive)  
 Converts a ``System.Drawing.Color[,]`` to a ``CodeChar[,]``.  
 
 ### Jay.BMPScript.BMPScriptException
@@ -192,11 +192,15 @@ Inherits: none
 **Fields**  
 ``private Queue<char> data``  
 A Queue for storing the program output, so it may be saved to the output bitmap.  
+**Constructors**  
+``public OutWriter()``  
+Creates a new, empty OutWriter object.  
+**Methods**  
 ``public void Write(string Data)``  
 Prints a message to ``stdout`` and enqueues it to the data queue.  
 ``public static void Debug(string Data)``  
 Logs a debug message to ``stderr``. Currently commented out.  
-``public void Finish(int OutFile)``  
+``public void Finish(int OutFile)``![Not implemented yet](https://img.shields.io/static/v1?label=Issue&message=Not%20implemented%20yet&color=critical)  
 Writes the output queue to the given output bmp. Not implemented yet.  
-``private static void SaveBMP(byte[] buffer, int width, int height, string file)``  
+``private static void SaveBMP(byte[] buffer, int width, int height, string file)``![Not implemented yet](https://img.shields.io/static/v1?label=Issue&message=Not%20implemented%20yet&color=critical)  
 The actual file conversion/writing. Not implemented yet.
