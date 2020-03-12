@@ -44,7 +44,7 @@ namespace Jay.BMPScript
         protected void Overview(Point Entry)
         {
             OutWriter.Debug("  == Program Overview ==  ");
-            IEnumerator<Point> it = new Iteration2D(Entry.X, Entry.Y, Program.GetLength(0), Program.GetLength(1)).Snake(180, true);
+            IEnumerator<Point> it = new Iteration2D(Entry.X, Entry.Y, Program.GetLength(0), Program.GetLength(1)).Snake(270, true);
             while(it.MoveNext())
             {
                 OutWriter.Debug("    " + GetAt(it.Current).ToString());
@@ -57,7 +57,7 @@ namespace Jay.BMPScript
             Overview(Entry);
             OutWriter.Debug("  Started Preprocessor...");
             IEnumerator<Point> it = new Iteration2D(Entry.X, Entry.Y, Program.GetLength(0), Program.GetLength(1))
-                .Snake(180, true);
+                .Snake(270, true);
             while(it.MoveNext())
             {
                 OutWriter.Debug($"    Current Iterator value: {it.Current}");
@@ -107,7 +107,7 @@ namespace Jay.BMPScript
             Iteration2D i2d = new Iteration2D(Entry.X, Entry.Y, Program.GetLength(0), Program.GetLength(1));
             bool fin = false;
             CodeChar cc;
-            IEnumerator<Point> it = i2d.Snake(180);
+            IEnumerator<Point> it = i2d.Snake(270);
             while(!fin && it.MoveNext())
             {
                 OutWriter.Debug((string)GetAt(it.Current) + " ");
