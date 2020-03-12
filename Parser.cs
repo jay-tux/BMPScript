@@ -41,40 +41,69 @@ namespace Jay.BMPScript
             OutWriter.Debug("   ==== End of SYS_DUMP ====   ");
         }
 
-        protected void PreProcess()
+        protected void Overview(Point Entry)
         {
-            OutWriter.Debug("Started Preprocessor...");
-            IEnumerator<Point> it = new Iteration2D(Program.GetLength(0), Program.GetLength(1), Program.GetLength(0), Program.GetLength(1))
+            OutWriter.Debug("  == Program Overview ==  ");
+            IEnumerator<Point> it = new Iteration2D(Entry.X, Entry.Y, Program.GetLength(0), Program.GetLength(1)).Snake(180, true);
+            while(it.MoveNext())
+            {
+                OutWriter.Debug("    " + GetAt(it.Current).ToString());
+            }
+            OutWriter.Debug("  == End of Overview ==  ");
+        }
+
+        protected void PreProcess(Point Entry)
+        {
+            Overview(Entry);
+            OutWriter.Debug("  Started Preprocessor...");
+            IEnumerator<Point> it = new Iteration2D(Entry.X, Entry.Y, Program.GetLength(0), Program.GetLength(1))
                 .Snake(180, true);
             while(it.MoveNext())
             {
+                OutWriter.Debug($"    Current Iterator value: {it.Current}");
+                //Jump to labels only
                 switch((CodeChar.Order)GetAt(it.Current))
                 {
+                    //Skip none
                     case CodeChar.Order.Entry:
-                    case CodeChar.Order.Exit:
+                    case CodeChar.Order.WriteLn:
                     case CodeChar.Order.Parse:
+                    case CodeChar.Order.Exit:
                         break;
-                    case 
-                }
-                if((CodeChar.Order)GetAt(it.Current) == CodeChar.Order.Label)
-                {
-                    OutWriter.Debug("Encountered Mark Label");
-                    it.MoveNext();
-                    Labels[GetAt(it.Current)] = new Point(it.Current.X, it.Current.Y);
+                    
+                    //Skip two
+                    case CodeChar.Order.If:
+                    case CodeChar.Order.Math:
+                    case CodeChar.Order.Not:
+                        it.MoveNext(); it.MoveNext();
+                        break;
+                    
+                    //Label: mark
+                    case CodeChar.Order.Label:
+                        it.MoveNext();
+                        Labels[GetAt(it.Current)] = new Point(it.Current.X, it.Current.Y);
+                        OutWriter.Debug($"      Encountered Mark Label: ({GetAt(it.Current).ToString()}) := {Labels[GetAt(it.Current)].ToString()}");
+                        break;
+
+                    //Skip one
+                    default:
+                        it.MoveNext();
+                        break;
                 }
             }
-            Console.WriteLine("Labels:");
+            Console.WriteLine("    Labels:");
             Labels.Select(x => $"{x.Key}: ({x.Value.X}, {x.Value.Y})").ToList().ForEach(x => Console.WriteLine($"\t{x}"));
-            OutWriter.Debug("Preprocessor Ready.");
+            OutWriter.Debug("  Preprocessor Ready.");
         }
 
         public void Start(Point Entry)
         {
+            OutWriter.Debug("Starting Parser.");
             Labels = new Dictionary<CodeChar, Point>();
             Integers = new Dictionary<int, int>();
             Characters = new Dictionary<int, char>();
-            PreProcess();
             if(Program == null) { Console.Error.Write("Program is empty."); }
+            PreProcess(Entry);
             Iteration2D i2d = new Iteration2D(Entry.X, Entry.Y, Program.GetLength(0), Program.GetLength(1));
             bool fin = false;
             CodeChar cc;
