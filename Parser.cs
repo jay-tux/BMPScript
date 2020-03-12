@@ -48,6 +48,14 @@ namespace Jay.BMPScript
                 .Snake(180, true);
             while(it.MoveNext())
             {
+                switch((CodeChar.Order)GetAt(it.Current))
+                {
+                    case CodeChar.Order.Entry:
+                    case CodeChar.Order.Exit:
+                    case CodeChar.Order.Parse:
+                        break;
+                    case 
+                }
                 if((CodeChar.Order)GetAt(it.Current) == CodeChar.Order.Label)
                 {
                     OutWriter.Debug("Encountered Mark Label");
