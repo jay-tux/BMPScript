@@ -28,7 +28,7 @@ namespace Jay.BMPScript
 
         protected void SysDump()
         {
-            OutWriter.Debug("   ====  Full SYS_DUMP  ====   ");
+            OutWriter.Debug("   ====  FULL SYS_DUMP  ====   ");
             OutWriter.Debug(" => Defined Labels:");
             Labels.Select(x => $"\t{x.Key}: ({x.Value.X}, {x.Value.Y})").ToList().ForEach(x => OutWriter.Debug(x));
             OutWriter.Debug(" ---- ---- ");
@@ -38,29 +38,29 @@ namespace Jay.BMPScript
             OutWriter.Debug("  --    --  ");
             OutWriter.Debug("    -> Defined Characters:");
             Characters.Select(x => $"\t{x.Key.ToString("D2")}: {x.Value}").ToList().ForEach(x => OutWriter.Debug(x));
-            OutWriter.Debug("   ==== End of SYS_DUMP ====   ");
+            OutWriter.Debug("   ==== END OF SYS_DUMP ====   ");
         }
 
         protected void Overview(Point Entry)
         {
-            OutWriter.Debug("  == Program Overview ==  ");
+            OutWriter.Debug("   ====  PROGRAM OVERVIEW  ====   ");
             IEnumerator<Point> it = new Iteration2D(Entry.X, Entry.Y, Program.GetLength(0), Program.GetLength(1)).Snake(270, true);
             while(it.MoveNext())
             {
                 OutWriter.Debug("    " + GetAt(it.Current).ToString());
             }
-            OutWriter.Debug("  == End of Overview ==  ");
+            OutWriter.Debug("   ====  END OF OVERVIEW  ====   ");
         }
 
         protected void PreProcess(Point Entry)
         {
-            Overview(Entry);
-            OutWriter.Debug("  Started Preprocessor...");
+            //Uncomment to show Program overview at start of execution
+            //Overview(Entry);
+            OutWriter.Debug("[ PREPROC ]  Started Preprocessor...");
             IEnumerator<Point> it = new Iteration2D(Entry.X, Entry.Y, Program.GetLength(0), Program.GetLength(1))
                 .Snake(270, true);
             while(it.MoveNext())
             {
-                OutWriter.Debug($"    Current Iterator value: {it.Current}");
                 //Jump to labels only
                 switch((CodeChar.Order)GetAt(it.Current))
                 {
@@ -80,9 +80,10 @@ namespace Jay.BMPScript
                     
                     //Label: mark
                     case CodeChar.Order.Label:
+                        Point pt = it.Current;
                         it.MoveNext();
                         Labels[GetAt(it.Current)] = new Point(it.Current.X, it.Current.Y);
-                        OutWriter.Debug($"      Encountered Mark Label: ({GetAt(it.Current).ToString()}) := {Labels[GetAt(it.Current)].ToString()}");
+                        OutWriter.Debug($"[ PREPROC ]      @{pt.ToString()}: Encountered Mark Label: ({GetAt(it.Current).ToString()}) := {Labels[GetAt(it.Current)].ToString()}");
                         break;
 
                     //Skip one
@@ -91,14 +92,14 @@ namespace Jay.BMPScript
                         break;
                 }
             }
-            Console.WriteLine("    Labels:");
-            Labels.Select(x => $"{x.Key}: ({x.Value.X}, {x.Value.Y})").ToList().ForEach(x => Console.WriteLine($"\t{x}"));
-            OutWriter.Debug("  Preprocessor Ready.");
+            OutWriter.Debug("[ PREPROC ]    Labels:");
+            Labels.Select(x => $"{x.Key}: ({x.Value.X}, {x.Value.Y})").ToList().ForEach(x => OutWriter.Debug($"[ PREPROC ]      {x}"));
+            OutWriter.Debug("[ PREPROC ]  Preprocessor Ready.");
         }
 
         public void Start(Point Entry)
         {
-            OutWriter.Debug("Starting Parser.");
+            OutWriter.Debug("[ PARSE   ]Starting Parser.");
             Labels = new Dictionary<CodeChar, Point>();
             Integers = new Dictionary<int, int>();
             Characters = new Dictionary<int, char>();
@@ -110,7 +111,7 @@ namespace Jay.BMPScript
             IEnumerator<Point> it = i2d.Snake(270);
             while(!fin && it.MoveNext())
             {
-                OutWriter.Debug((string)GetAt(it.Current) + " ");
+                OutWriter.Debug("[ PARSE   ]  " + (string)GetAt(it.Current));
                 switch((CodeChar.Order)GetAt(it.Current))
                 {
                     case CodeChar.Order.Entry:  
@@ -125,7 +126,7 @@ namespace Jay.BMPScript
                         cc = GetAt(it.Current);
                         if(EvaluateCheck(cc.GetField(CodeChar.Part.R), cc.GetField(CodeChar.Part.G), cc.GetField(CodeChar.Part.B)))
                         {
-                            OutWriter.Debug("  Check Succeeded");
+                            OutWriter.Debug("[ PARSE   ]    Check Succeeded");
                             it.MoveNext();
                             if(Labels.ContainsKey(GetAt(it.Current)))
                             {
@@ -135,7 +136,7 @@ namespace Jay.BMPScript
                         }
                         else
                         {
-                            OutWriter.Debug("  Check Failed");
+                            OutWriter.Debug("[ PARSE   ]    Check Failed");
                             it.MoveNext();
                         }
                         break;
@@ -165,7 +166,7 @@ namespace Jay.BMPScript
                         cc = GetAt(it.Current);
                         if(!EvaluateCheck(cc.GetField(CodeChar.Part.R), cc.GetField(CodeChar.Part.G), cc.GetField(CodeChar.Part.B)))
                         {
-                            OutWriter.Debug("  Check Succeeded");
+                            OutWriter.Debug("[ PARSE    ]    Check Succeeded");
                             it.MoveNext();
                             if(Labels.ContainsKey(GetAt(it.Current)))
                             {
@@ -175,7 +176,7 @@ namespace Jay.BMPScript
                         }
                         else
                         {
-                            OutWriter.Debug("  Check Failed");
+                            OutWriter.Debug("[ PARSE   ]    Check Failed");
                             it.MoveNext();
                         }
                         break;

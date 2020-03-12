@@ -17,14 +17,17 @@ namespace Jay.BMPScript
                 data[xPos, yPos] = pos;
             }
 
+            OutWriter.Debug("   ====  IMAGE OVERVIEW  ====   ");
             for(int y = 0; y < Height; y++)
             {
+                string str = "";
                 for(int x = 0; x < Width; x++)
                 {
-                    Console.Write(data[x, y].ToString() + " ");
+                    str += data[x, y].ToString() + " ";
                 }
-                Console.WriteLine();
+                OutWriter.Debug(str);
             }
+            OutWriter.Debug("   ====  END OF OVERVIEW  ====   ");
             return data;
         }
 

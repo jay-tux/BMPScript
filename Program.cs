@@ -14,10 +14,10 @@ namespace Jay.BMPScript
             }
             else
             {
-                Console.WriteLine($"Trying to load {args[0]}.");
+                OutWriter.Debug($"[ BOOT    ]Trying to load {args[0]}.");
                 if(File.Exists(args[0]))
                 {
-                    Console.WriteLine($"Started parser on {args[0]}.");
+                    OutWriter.Debug($"[ BOOT    ]Started parser on {args[0]}.");
                     new Loader(args[0]);
                     //new Loader(args[0]);
                 }

@@ -22,22 +22,22 @@ namespace Jay.BMPScript
                 try
                 {
                     Entry = new Point(0, 0);
-                    OutWriter.Debug("Trying to load/convert image...");
+                    OutWriter.Debug("[ LOAD    ]Trying to load/convert image...");
                     Data = new ParseBMP().Recreate(Input);
-                    if(Data == null) { OutWriter.Debug("Failed to load."); return; }
-                    OutWriter.Debug($"  Recreated image in RAM ({Data.GetLength(0)}x{Data.GetLength(1)})");
+                    if(Data == null) { OutWriter.Debug("[ LOAD ]  Failed to load."); return; }
+                    OutWriter.Debug($"[ LOAD    ]    Recreated image in RAM ({Data.GetLength(0)}x{Data.GetLength(1)})");
                     for(int x = 0; x < Data.GetLength(0); x++)
                     {
                         for(int y = 0; y < Data.GetLength(1); y++)
                         {
-                            if(Data[x, y] == null) { OutWriter.Debug($"    CodeChar@({x},{y}) is null."); }
+                            if(Data[x, y] == null) { OutWriter.Debug($"[  LOAD ]      CodeChar@({x},{y}) is null."); }
                             if((CodeChar.Order)(Data[x, y]) == CodeChar.Order.Entry)
                             {
                                 Entry = new Point(x, y);
                             }
                         }
                     }
-                    OutWriter.Debug("  Ready");
+                    OutWriter.Debug("[ LOAD    ]    Ready");
                     new Parser(Data, Depth).Start(Entry);
                 }
                 catch(ArgumentException ane)
