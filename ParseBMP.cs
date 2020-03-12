@@ -12,9 +12,18 @@ namespace Jay.BMPScript
             for(int field = 0; field < fData.Length; field += 4)
             {
                 int xPos = (field / 4) % Width;
-                int yPos = (field / 4) / Width;
-                CodeChar pos = (CodeChar)(new byte[]{ fData[field], fData[field + 1], fData[field + 2] });
+                int yPos = Height - 1 - (field / 4) / Width;
+                CodeChar pos = (CodeChar)(new byte[]{ fData[field + 2], fData[field + 1], fData[field] });
                 data[xPos, yPos] = pos;
+            }
+
+            for(int y = 0; y < Height; y++)
+            {
+                for(int x = 0; x < Width; x++)
+                {
+                    Console.Write(data[x, y].ToString() + " ");
+                }
+                Console.WriteLine();
             }
             return data;
         }
