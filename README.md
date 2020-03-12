@@ -3,13 +3,17 @@
 ## Programming Guide
 ### Introduction
 Short and sweet: each pixel in your bitmap is parsed as either a command, or the arguments for the last command.
-#### Variables
+### Image Limitations
+There are two (known) limitations to the images BMPScript can parse:  
+ * Images should be bitmap files, no other types are accepted (hence the name). An overview of the BMP format can be found here: [Bitmap overview](https://itnext.io/bits-to-bitmaps-a-simple-walkthrough-of-bmp-image-format-765dc6857393).  
+ * The image's color grid should be written in the format ``(R, G, B, A)``, in other words, it should use 4 bytes per pixel.
+### Variables
 BMPScript can (theoretically) accept up to 512 (different) variables, of which up to 256 can be integers and up to 256 can be characters. Due to practical reasons, only 256 variables can be defined and used.
 BMPScript uses two datatypes (they are represented by a range of integers):  
  * integers, spanning ``128-255``,  
  * characters, spanning ``0-127``  
 There is (currently) no way to define custom datatypes.
-#### Operators
+### Operators
 BMPScript has only comparison operators and mathematical operators:  
  * Comparison operators:  
    * ``<``, spanning ``0-63``,  
@@ -21,10 +25,10 @@ BMPScript has only comparison operators and mathematical operators:
    * ``-``, spanning ``64-127``,  
    * ``+``, spanning ``128-191``, and  
    * ``*``, spanning ``192-255``
-#### Normal Order of Execution
+### Normal Order of Execution
 Because BMPScript is an esoteric programming language, we won't parse your image top-to-bottom, left-to-right, but in a snake-like way, starting at the top-right pixel.  
 ![Start bottom-right, then up](https://github.com/jay-tux/BMPScript/blob/master/help/orderofexec.png  "Order of execution")
-#### Commands
+### Commands
 BMPScript has 16 possible commands, each of which has a range of colors describing the exact same command. This allows for the whole RGB ``(0-255, 0-255, 0-255)`` to be parsable as a command. Complementary commands (mostly) use complementary colors as well.   
 ***
 **ENTRY**  

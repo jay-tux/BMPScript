@@ -14,7 +14,7 @@ namespace Jay.BMPScript
             Console.Write(Data);
         }
 
-        public static void Debug(string Data) {} // => Console.Error.WriteLine(Data);
+        public static void Debug(string Data) => Console.Error.WriteLine(Data);
 
         /*public void Finish(int OutFile)
         {

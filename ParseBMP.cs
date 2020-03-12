@@ -9,11 +9,13 @@ namespace Jay.BMPScript
         {
             byte[] fData = GetBytes(BMP, out int Width, out int Height);
             CodeChar[,] data = new CodeChar[Width, Height];
+            OutWriter.Debug($"[ BMPLOAD ]  Image is {Width}x{Height}.");
             for(int field = 0; field < fData.Length; field += 4)
             {
                 int xPos = (field / 4) % Width;
                 int yPos = Height - 1 - (field / 4) / Width;
                 CodeChar pos = (CodeChar)(new byte[]{ fData[field + 2], fData[field + 1], fData[field] });
+                OutWriter.Debug($"[ BMPLOAD ]    Filling @{xPos};{yPos}={pos}");
                 data[xPos, yPos] = pos;
             }
 
@@ -38,10 +40,15 @@ namespace Jay.BMPScript
             Height = GetField(22, 4, bytes);
             int start = GetField(10, 4, bytes);
             byte[] data = new byte[bytes.Length - start];
+            int count = 1;
             for(int i = start; i < bytes.Length; i++)
             {
                 data[i - start] = bytes[i];
+                Console.Write(bytes[i].ToString("X2") + " ");
+                if(count % 20 == 0) { Console.WriteLine(); }
+                count++;
             }
+            Console.WriteLine();
             return data;
         }
 
