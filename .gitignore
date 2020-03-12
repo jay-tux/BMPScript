@@ -1,3 +1,4 @@
 bin/*
 mono_*
 template/*
+examples/dump.bmp
