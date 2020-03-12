@@ -36,7 +36,7 @@ namespace Jay.BMPScript
             OutWriter.Debug("   -> Defined Integers:");
             Integers.Select(x => $"\t{x.Key.ToString("D2")}: {x.Value}").ToList().ForEach(x => OutWriter.Debug(x));
             OutWriter.Debug("  --    --  ");
-            OutWriter.Debug("    -> Defined Characters:");
+            OutWriter.Debug("   -> Defined Characters:");
             Characters.Select(x => $"\t{x.Key.ToString("D2")}: {x.Value}").ToList().ForEach(x => OutWriter.Debug(x));
             OutWriter.Debug("   ==== END OF SYS_DUMP ====   ");
         }
@@ -99,19 +99,20 @@ namespace Jay.BMPScript
 
         public void Start(Point Entry)
         {
-            OutWriter.Debug("[ PARSE   ]Starting Parser.");
             Labels = new Dictionary<CodeChar, Point>();
             Integers = new Dictionary<int, int>();
             Characters = new Dictionary<int, char>();
             if(Program == null) { Console.Error.Write("Program is empty."); }
             PreProcess(Entry);
+            OutWriter.Debug("");
+            OutWriter.Debug("[ PARSE   ]Starting Parser.");
             Iteration2D i2d = new Iteration2D(Entry.X, Entry.Y, Program.GetLength(0), Program.GetLength(1));
             bool fin = false;
             CodeChar cc;
             IEnumerator<Point> it = i2d.Snake(270);
             while(!fin && it.MoveNext())
             {
-                OutWriter.Debug("[ PARSE   ]  " + (string)GetAt(it.Current));
+                OutWriter.Debug("[ PARSE   ]  @" + it.Current.ToString() + ": " + (string)GetAt(it.Current));
                 switch((CodeChar.Order)GetAt(it.Current))
                 {
                     case CodeChar.Order.Entry:  
@@ -187,6 +188,7 @@ namespace Jay.BMPScript
                         break;
 
                     case CodeChar.Order.Read:
+                        Console.Write("? ");
                         it.MoveNext();
                         cc = GetAt(it.Current);
                         if(cc.GetField(CodeChar.Part.R) >= 128)
@@ -273,6 +275,8 @@ namespace Jay.BMPScript
                         break;
                 }
             }
+            OutWriter.Debug("[ PARSE   ]Parser finished.");
+            OutWriter.Debug("");
             SysDump();
         }
 

@@ -98,7 +98,7 @@ Defines a new variable, or changes an existing variable.
 *Color Range:*  ``(208, 0, 0) -> (223, 255, 255)``
 ***
 **READ**  
-Reads a value from ``stdin`` to a variable. Keeps re-asking the user for input until the input is correctly formatted (either an integer, or a string with ``length >= 1``, of which ``input[0]`` is stored)  
+Prints a prompt (``? ``), then reads a value from ``stdin`` to a variable. Keeps re-asking the user for input until the input is correctly formatted (either an integer, or a string with ``length >= 1``, of which ``input[0]`` is stored)  
 *Parameters (2):* the variable type (in the RED slot), and the variable name (in the GREEN slot).  
 *Color Range:*  ``(224, 0, 0) -> (239, 255, 255)``
 ***

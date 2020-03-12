@@ -46,10 +46,10 @@ if [[ $compile == 'true' ]]; then
 		>&2 echo "Failed to compile." 
 		exit -1
 	fi
+	echo ""
+	echo ""
 fi
 if [[ $run == 'true' ]]; then
-	echo ""
-	echo ""
 	dr=`pwd`
 	mono bin/bmpscript.exe "$dr/examples/0.bmp"
 fi
