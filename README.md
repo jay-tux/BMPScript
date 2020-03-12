@@ -3,6 +3,29 @@
 ## Programming Guide
 ### Introduction
 Short and sweet: each pixel in your bitmap is parsed as either a command, or the arguments for the last command.
+### Examples
+The ``./examples/`` directory contains multiple examples which can be used as preparation to programming in BMPScript. Next up is a list of all examples currently provided, along with a description and their status.
+```
++-----------------+--------+--------------------------------+
+| Example File    | Status | Description                    |
++-----------------+--------+--------------------------------+
+| hello_world.bmp | OK     | Prints 'Hello World!', without |
+|                 |        | trailing newline. No variables |
+|                 |        | are used in this example.      |
++-----------------+--------+--------------------------------+
+| sum.bmp         | IN DEV | Takes two integers, calculates |
+|                 |        | and prints their sums.         |
++-----------------+--------+--------------------------------+
+| power.bmp       | IN DEV | Takes two integers, n and e,   |
+|                 |        | then calculates and prints     |
+|                 |        | their power n^e.               |
++-----------------+--------+--------------------------------+
+| fib.bmp         | IN DEV | Takes an integer n from stdin, |
+|                 |        | then prints the first n        |
+|                 |        | Fibonacci numbers.             |
++-----------------+--------+--------------------------------+
+```
+Each of these files uses the 'standard' Snake-270 degrees order-of-execution, and their entry points are always positioned at the top-right corner of the image.
 ### Image Limitations
 There are two (known) limitations to the images BMPScript can parse:  
  * Images should be bitmap files, no other types are accepted (hence the name). An overview of the BMP format can be found here: [Bitmap overview](https://itnext.io/bits-to-bitmaps-a-simple-walkthrough-of-bmp-image-format-765dc6857393).  
@@ -27,7 +50,7 @@ BMPScript has only comparison operators and mathematical operators:
    * ``*``, spanning ``192-255``
 ### Normal Order of Execution
 Because BMPScript is an esoteric programming language, we won't parse your image top-to-bottom, left-to-right, but in a snake-like way, starting at the top-right pixel.  
-![Start bottom-right, then up](https://github.com/jay-tux/BMPScript/blob/master/help/orderofexec.png  "Order of execution")
+![Start top-right, then up](https://github.com/jay-tux/BMPScript/blob/master/help/orderofexec.png  "Order of execution")
 ### Commands
 BMPScript has 16 possible commands, each of which has a range of colors describing the exact same command. This allows for the whole RGB ``(0-255, 0-255, 0-255)`` to be parsable as a command. Complementary commands (mostly) use complementary colors as well.   
 ***

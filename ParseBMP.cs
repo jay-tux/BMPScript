@@ -44,11 +44,13 @@ namespace Jay.BMPScript
             for(int i = start; i < bytes.Length; i++)
             {
                 data[i - start] = bytes[i];
-                Console.Write(bytes[i].ToString("X2") + " ");
-                if(count % 20 == 0) { Console.WriteLine(); }
+                //Uncomment next two lines to display image byte-by-byte upon loading
+                /*Console.Write(bytes[i].ToString("X2") + " ");
+                if(count % 20 == 0) { Console.WriteLine(); }*/
                 count++;
             }
-            Console.WriteLine();
+            //Uncomment next line to fix formatting after showing image
+            //Console.WriteLine();
             return data;
         }
 

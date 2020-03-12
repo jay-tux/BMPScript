@@ -10,6 +10,7 @@ namespace Jay.BMPScript
     public class Parser
     {
         public static Random RNG = new Random();
+        public static OutWriter Writer = new OutWriter();
         private Dictionary<CodeChar, Point> Labels;
         private Dictionary<int, int> Integers;
         private Dictionary<int, char> Characters;
@@ -261,17 +262,17 @@ namespace Jay.BMPScript
                     case CodeChar.Order.WriteC: 
                         it.MoveNext();
                         cc = this.GetAt(it.Current);
-                        Console.Write($"{(char)cc.GetField(CodeChar.Part.R)}{(char)cc.GetField(CodeChar.Part.G)}{(char)cc.GetField(CodeChar.Part.B)}");
+                        Writer.Write($"{(char)cc.GetField(CodeChar.Part.R)}{(char)cc.GetField(CodeChar.Part.G)}{(char)cc.GetField(CodeChar.Part.B)}");
                         break;
 
                     case CodeChar.Order.WriteLn:
-                        Console.WriteLine();
+                        Writer.Write("");
                         break;
 
                     case CodeChar.Order.WriteV: 
                         it.MoveNext();
                         int vl = this.GetAt(it.Current).GetField(CodeChar.Part.R);
-                        Console.Write((Integers.ContainsKey(vl) ? Integers[vl] : Characters.ContainsKey(vl) ? Characters[vl] : vl));
+                        Writer.Write(((Integers.ContainsKey(vl) ? Integers[vl] : Characters.ContainsKey(vl) ? Characters[vl] : vl)).ToString());
                         break;
                 }
             }
@@ -282,7 +283,7 @@ namespace Jay.BMPScript
 
         protected int EvaluateMath(int ID1, int OP, int ID2)
         {
-            Console.WriteLine("Operator is " + (OP < 64 ? "/" : (OP < 128) ? "-" : (OP < 192) ? "+" : "*"));
+            //Console.WriteLine("Operator is " + (OP < 64 ? "/" : (OP < 128) ? "-" : (OP < 192) ? "+" : "*"));
             int val1 = (Integers.ContainsKey(ID1) ? Integers[ID1] : (Characters.ContainsKey(ID1) ? (int)Characters[ID1] : ID1));
             int val2 = (Integers.ContainsKey(ID2) ? Integers[ID2] : (Characters.ContainsKey(ID2) ? (int)Characters[ID2] : ID2));
             return (OP < 64) ? val1 / val2 : 
@@ -292,7 +293,7 @@ namespace Jay.BMPScript
 
         protected bool EvaluateCheck(int ID1, int OP, int ID2)
         {
-            Console.WriteLine("Operator is " + (OP < 64 ? "< " : (OP < 128) ? "==" : (OP < 192) ? "!=" : "> "));
+            //Console.WriteLine("Operator is " + (OP < 64 ? "< " : (OP < 128) ? "==" : (OP < 192) ? "!=" : "> "));
             int val1 = (Integers.ContainsKey(ID1) ? Integers[ID1] : (Characters.ContainsKey(ID1) ? (int)Characters[ID1] : ID1));
             int val2 = (Integers.ContainsKey(ID2) ? Integers[ID2] : (Characters.ContainsKey(ID2) ? (int)Characters[ID2] : ID2));
             return (OP < 64) ? val1 < val2 : 
