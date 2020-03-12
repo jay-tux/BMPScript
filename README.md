@@ -39,7 +39,7 @@ Prints a single variable to ``stdout``, without a trailing newline. Depending on
 ***
 **WRITE_C**  
 Prints up to three characters to ``stdout``, also without trailing newline.  
-*Parameters (1-3):* up to three ASCII character values, respectively in the RED, GREEN and BLACK slots of the next pixel.  
+*Parameters (1-3):* up to three ASCII character values, respectively in the RED, GREEN and BLUE slots of the next pixel.  
 *Color Range:*   ``(32, 0, 0) -> (47, 255, 255)``
 ***
 **WRITE_LN**  

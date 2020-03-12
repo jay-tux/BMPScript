@@ -282,6 +282,7 @@ namespace Jay.BMPScript
 
         protected int EvaluateMath(int ID1, int OP, int ID2)
         {
+            Console.WriteLine("Operator is " + (OP < 64 ? "/" : (OP < 128) ? "-" : (OP < 192) ? "+" : "*"));
             int val1 = (Integers.ContainsKey(ID1) ? Integers[ID1] : (Characters.ContainsKey(ID1) ? (int)Characters[ID1] : ID1));
             int val2 = (Integers.ContainsKey(ID2) ? Integers[ID2] : (Characters.ContainsKey(ID2) ? (int)Characters[ID2] : ID2));
             return (OP < 64) ? val1 / val2 : 
@@ -291,6 +292,7 @@ namespace Jay.BMPScript
 
         protected bool EvaluateCheck(int ID1, int OP, int ID2)
         {
+            Console.WriteLine("Operator is " + (OP < 64 ? "< " : (OP < 128) ? "==" : (OP < 192) ? "!=" : "> "));
             int val1 = (Integers.ContainsKey(ID1) ? Integers[ID1] : (Characters.ContainsKey(ID1) ? (int)Characters[ID1] : ID1));
             int val2 = (Integers.ContainsKey(ID2) ? Integers[ID2] : (Characters.ContainsKey(ID2) ? (int)Characters[ID2] : ID2));
             return (OP < 64) ? val1 < val2 : 
