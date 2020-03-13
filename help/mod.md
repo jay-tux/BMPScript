@@ -46,7 +46,7 @@ Returns an IEnumerator which iterates right-to-left over each line, starting at 
 ``public IEnumerator<Point> Random()``  
 Returns an IEnumerator which picks random elements from the 2D array.  
 ``public IEnumerator<Point> Snake(int direction, bool oneRun = false)``  
-Returns a so-called Snakewise enumerator. For a complete overview of the Snake IEnumerator, see [help/snake.md](https://github.com/jay-tux/BMPScript/blob/master/help/snake.md).
+Returns a so-called Snakewise enumerator. For a complete overview of the Snake IEnumerator, see [help/Snake.md](https://github.com/jay-tux/BMPScript/blob/master/help/Snake.md).
 ***
 ### Jay.BMPScript.Program
 File: ``./Program.cs``  
